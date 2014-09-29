@@ -1,0 +1,60 @@
+﻿<table class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>学号</th>
+            <th>姓名</th>
+            <th>学院</th>
+            <th>专业</th>
+            <th>班级</th>
+            <th>详情</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        #foreach($stu in $Data.stu_list)
+        <tr class="list-users">
+            <td>$stu.sid</td>
+            <td>$stu.name</td>
+            <td>$stu.institute</td>
+            <td>$stu.department</td>
+            <td>$stu.class</td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">显示<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-header">联系方式</li>
+                        <li><a href="tel:$stu.tel"><i class="icon-user"></i> 手机: <strong>$stu.tel</strong></a></li>
+                        <li><a href="tel:$stu.shorttel"><i class="icon-user"></i> 短号: <strong>$stu.shorttel</strong></a></li>
+                        <li class="nav-header">论文</li>
+                        <li><a href="#"><i class="icon-file"></i>  <strong>$stu.tel</strong></a></li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                #if($stu.is_active==1)<span class="label label-success">正常</span>#end
+                #if($stu.is_active==0)<span class="label label-warning">冻结</span> #end
+            
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">操作 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:;" class="mb_edit" data-role="stu" data-id="$stu.id"><i class="icon-pencil"></i> 编辑</a></li>
+                        <li><a href="javascript:;" class="mb_del" data-role="stu" data-id="$stu.id"><i class="icon-trash"></i> 删除</a></li>
+                        <li><a href="javascript:;" class="mb_csta" data-val="#if($stu.is_active==1)0#end#if($stu.is_active==0)1#end" data-role="stu" data-id="$stu.id">
+                            <i class="icon-user"></i> 
+                            #if($stu.is_active==1)冻结#end
+                            #if($stu.is_active==0)解除冻结#end
+                            </a></li>
+                        <li><a href="javascript:;" class="mb_rspwd" data-role="stu" data-id="$stu.id"><i class="icon-repeat"></i> 重置密码</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        #end
+    </tbody>
+</table>
+<div class="pagination">
+    $Data.page
+</div>

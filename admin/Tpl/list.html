@@ -1,0 +1,180 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#include("public/head.html")
+</head>
+<body>
+#include("public/navbar.html")
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span9">
+                <div class="row-fluid">
+                    #if($Data.member=="stu")
+                    <div class="page-header">
+                        <h1>学生 <small>列表</small>
+                        <a href="javascript:void(0);" class="btn btn-success add_stu_btn">添加学生</a></h1>
+                       
+                    </div>
+                    <div class="stu_list_box">
+                        #parse("public/stu_list_tmpl.html")
+                    </div>
+                    #end
+                    #if($Data.member=="tec")
+                    <div class="page-header">
+                        <h1>
+                            教务人员 <small>列表</small>
+                            <a href="javascript:void(0);" class="btn btn-success add_stu_btn">添加教务员</a>
+                        </h1>
+
+                    </div>
+                    <div class="stu_list_box">
+                        #parse("public/tec_list_tmpl.html")
+                    </div>
+                    #end
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        #parse("public/footer.html")
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-menu li a').hover(
+            function () {
+                $(this).children('i').addClass('icon-white');
+            },
+            function () {
+                $(this).children('i').removeClass('icon-white');
+            });
+
+            if ($(window).width() > 760) {
+                $('tr.list-users td div ul').addClass('pull-right');
+            }
+            $(document).on("click", ".pagination a", function () {
+                jQuery.getJSON($(this).attr('href'), function (data){
+                    $(".stu_list_box").html(data.data);
+                });
+                return false;
+            });
+            //弹出添加学生层
+            $(".add_stu_btn").click(function () {
+                jQuery.getJSON("MemberHandler.ashx?a=get_tpl&t=stu_add", function (data) {
+                    if (data.status == 1) {
+                        layer.open({
+                            title: ['添加学生', 'color:#333;text-align:left;'],
+                            type: 1,
+                            content: data.data,
+                            style: 'width:50%; height:100%; background-color:#f5f5f5; border:none;text-align:center;'
+                        });
+                    }
+
+                });
+                
+            });
+            //$(document).on("click", "#btn_stu", function () {
+            //    jQuery.post("MemberHandler.ashx?a=add_stu");
+            //    return false;
+            //});
+            //添加学生
+            $(document).on("submit", "#stu_form", function () {
+                var loading = layer.open({type:2,shadeClose:false});
+                jQuery.post("MemberHandler.ashx?a=add_stu", $("#stu_form").serialize(), function (data) {
+                    if (data.status == 1) {
+                        $(".layermbox").remove();
+                        layer.open({ content: "操作成功",time:2,shadeClose:false });
+                        jQuery.getJSON("index.ashx?a=stu_list", function (data) {
+                            $(".stu_list_box").html(data.data);
+                        });
+                    } else {
+                        layer.open({conent:data.msg,time:2,shadeClose:false});
+                    }
+                },"json");
+                return false;
+            });
+            //编辑信息
+            $(document).on("click", ".mb_edit", function () {
+                var id = $(this).attr("data-id");
+                var type = $(this).attr("data-role");
+                jQuery.getJSON("MemberHandler.ashx?a=get_tpl&t="+type+"_edit", { id: $(this).attr("data-id") }, function (data) {
+                    if (data.status == 1) {
+                        layer.open({
+                            content: data.data,
+                            shadeClose: false,
+                            title: ["修改学生信息", 'color:#333;text-align:left;border:none;text-align:center;'],
+                            style: "width:50%; height:100%; background-color:#f5f5f5; border:none;text-align:center;overflow:scroll;",
+                            type:1
+                        })
+                    }
+                });
+            });
+            //删除成员账号
+            $(document).on("click", ".mb_del", function () {
+                var id = $(this).attr("data-id");
+                var type = $(this).attr("data-role");
+                layer.open({
+                    content: "确实要删除吗？",
+                    btn: ["确认", "取消"],
+                    yes: function (idx) {
+                        jQuery.post("MemberHandler.ashx?a=del_stu", { id: id,type:type }, function (da) {
+                            layer.open({ content: da.msg, time: 2, style: "background-color:#51a351;text-align:center;color:#ffffff" });
+                            jQuery.getJSON("index.ashx?a="+type+"_list", function (data) {
+                                $(".stu_list_box").html(data.data);
+                        });
+
+                        },"json");
+                    },
+                    no: function () { }
+                })
+            });
+            //冻结成员账号
+            $(document).on("click", ".mb_csta", function () {
+                var id = $(this).attr("data-id");
+                var type = $(this).attr("data-role");
+                var val = $(this).attr("data-val");
+                var tip = '';
+                switch (val) {
+                    case '0':
+                        tip="冻结后账号将不能登陆，确认吗？";
+                        break;
+                    case '1':
+                        tip = "解除冻结后账号恢复正常登陆，确认吗？";
+                        break;
+                }
+                layer.open({
+                    content: tip,
+                    btn: ["确认", "取消"],
+                    yes: function (idx) {
+                        jQuery.post("MemberHandler.ashx?a=mb_fs", { id: id, type: type, is_active: val }, function (da) {
+                            layer.open({ content: da.msg, time: 2, style: "background-color:#51a351;text-align:center;color:#ffffff" });
+                            jQuery.getJSON("index.ashx?a=" + type + "_list", function (data) {
+                                $(".stu_list_box").html(data.data);
+                            });
+
+                        }, "json");
+                    },
+                    no: function () { }
+                });
+            });
+            $(document).on("click", ".mb_rspwd", function () {
+                var id = $(this).attr("data-id");
+                var type = $(this).attr("data-role");
+                layer.open({
+                    content: "确认重置该账号密码?",
+                    btn: ["确认", "取消"],
+                    yes: function (idx) {
+                        jQuery.post("MemberHandler.ashx?a=mb_rspsw", { id: id, type: type }, function (da) {
+                            layer.open({ content: da.msg, time: 2, style: "background-color:#51a351;text-align:center;color:#ffffff" });
+                            jQuery.getJSON("index.ashx?a=" + type + "_list", function (data) {
+                                $(".stu_list_box").html(data.data);
+                            });
+
+                        }, "json");
+                    },
+                    no: function () { }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

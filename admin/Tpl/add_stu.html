@@ -1,0 +1,51 @@
+﻿
+<form id="stu_form" action="MemberHandler.ashx?a=add_stu" method="post">
+    <div class="control-group">
+        <label class="control-label" for="sid">学号</label>
+        <div class="controls">
+            <input type="text" class="input-xlarge" required="required" name="sid" id="sid" #if($Data.data.id > 0) value="$Data.data.sid" #end />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="name">姓名</label>
+        <div class="controls">
+            <input type="text" class="input-xlarge" required="required" name="name" id="name" #if($Data.data.id> 0) value="$Data.data.name" #end />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="institute">学院</label>
+        <div class="controls">
+            <input type="text" class="input-xlarge" required="required" name="institute" id="institute" #if($Data.data.id> 0) value="$Data.data.institute" #end />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="department">专业</label>
+        <div class="controls">
+            <input type="text" class="input-xlarge" required="required" name="department" id="department" #if($Data.data.id> 0) value="$Data.data.department" #end />
+        </div>
+    </div>
+    #if($Data.data.id>0)
+    <div class="control-group">
+        <label class="control-label" for="class">班级</label>
+        <div class="controls">
+            <input type="text" class="input-xlarge" required="required" name="class" id="class" #if($Data.data.id> 0) value="$Data.data.class" #end />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="tel">电话</label>
+        <div class="controls">
+            <input type="text" class="input-xlarge" required="required" name="tel" id="tel" #if($Data.data.id> 0) value="$Data.data.tel" #end />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="shorttel">短号</label>
+        <div class="controls">
+            <input type="text" class="input-xlarge" required="required" name="shorttel" id="shorttel" #if($Data.data.id> 0) value="$Data.data.shorttel" #end />
+        </div>
+    </div>
+    #end
+    <div class="form-actions">
+        #if($Data.data.id>0) <input type="hidden" name="id" value="$Data.data.id" /> #end
+        <input type="submit" class="btn btn-success btn-large" value="添加" />
+    </div>
+</form>

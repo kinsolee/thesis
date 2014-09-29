@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    #include("public/head.html")
+</head>
+<body>
+    #include("public/navbar.html")
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span9">
+                <div class="row-fluid">
+                    <div class="page-header form-horizontal">
+                        <h1>添加 <small>教务员</small></h1>
+                    </div>
+                    <fieldset class="form-horizontal">
+                        <form action="mb_handler.ashx?a=add_tec" method="post">
+                            <div class="control-group">
+                                <label class="control-label" for="tid">教务ID</label>
+                                <div class="controls">
+                                    <input type="text" class="input-xlarge" required="required" name="tid" id="tid" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="name">姓名</label>
+                                <div class="controls">
+                                    <input type="text" class="input-xlarge" required="required" name="name" id="name" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="institute">学院</label>
+                                <div class="controls">
+                                    <input type="text" class="input-xlarge" required="required" name="institute" id="institute" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="degree">学位</label>
+                                <div class="controls">
+                                    <input type="text" class="input-xlarge" required="required" name="degree" id="degree" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="jobtitle">职称</label>
+                                <div class="controls">
+                                    <input type="text" class="input-xlarge" required="required" name="jobtitle" id="jobtitle" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="role">Role</label>
+                                <div class="controls">
+                                    <select id="role" name="role">
+                                        <option value="1">教师</option>
+                                        <option value="2">系办</option>
+                                        <option value="3">院长</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <input type="submit" class="btn btn-success btn-large" value="添加" />
+                                <a class="btn" href="javascript:history.go(-1)">返回</a>
+                            </div>
+                        </form>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        #parse("footer.html")
+        <script src="js/jquery.flot.js"></script>
+        <script src="js/jquery.flot.resize.js"></script>
+</body>
+</html>
