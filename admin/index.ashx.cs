@@ -75,6 +75,7 @@ namespace thesis.admin
             HttpRequest req = context.Request;
             string action = req["a"].ToLower();
             string result = hs[action]();
+		//输出
             context.Response.Write(result);
         }
         
